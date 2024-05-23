@@ -1,3 +1,31 @@
+$border-radius: 6px;
+$card-header-gap: 0.5rem;
+
+@mixin card() {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  border: 1px solid black;
+  border-radius: $border-radius;
+}
+
+@mixin cardHeader() {
+  width: 100%;
+  border-bottom: 1px solid black;
+  padding-bottom: $card-header-gap;
+  margin-bottom: $card-header-gap;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  padding: 1rem;
+}
+
 .current-weather {
   display: flex;
   flex-direction: column;
@@ -6,5 +34,68 @@
 
   &__location {
     color: red;
+  }
+}
+
+.today-forecast {
+  @include card();
+  margin-top: 2rem;
+
+  &__conditions {
+    @include cardHeader();
+  }
+
+  &__hours {
+    width: 100%;
+    display: flex;
+    overflow-x: scroll;
+    gap: 0.5rem;
+  }
+}
+
+.hourly-forecast {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+
+  &__icon {
+    width: 4rem;
+  }
+}
+
+.forecast {
+  @include card();
+  margin-top: 2rem;
+
+  &__title {
+    @include cardHeader();
+  }
+
+  &__days {
+    display: flex;
+    flex-direction: column;
+    gap: $card-header-gap;
+    width: 100%;
+  }
+}
+
+.forecast-day {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, max-content);
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: $card-header-gap;
+  border-bottom: 1px solid black;
+
+  &:last-child {
+    padding: 0;
+    border: none;
+  }
+
+  &__icon {
+    width: 2.5rem;
   }
 }

@@ -3,6 +3,7 @@ import {
   formatHourlyTime,
   formatTemperature,
   get24HoursForecastFromNow,
+  getDayOfWeek,
 } from "./utils";
 
 export function renderDetailView(weatherData) {
@@ -24,7 +25,8 @@ export function renderDetailView(weatherData) {
       currentDay.day.maxwind_kph,
       forecast.forecastday,
       current.last_updated_epoch
-    );
+    ) +
+    getForecastHtml(forecast.forecastday);
 }
 
 function getHeaderHtml(location, currentTemp, condition, maxTemp, minTemp) {
@@ -35,7 +37,7 @@ function getHeaderHtml(location, currentTemp, condition, maxTemp, minTemp) {
         <p class="current-weather__condition">${condition}</p>
         <div class="current-weather__day-temperatures">
             <span class="current-weather__max-temperature">H:${maxTemp}°</span>
-            <span class="current-weather__min-temperature">L:${minTemp}°</span>
+            <span class="current-weather__min-temperature">T:${minTemp}°</span>
         </div>
     </div> 
     `;
@@ -56,9 +58,9 @@ function getTodayForecastHtml(
             <div class="hourly-forecast__time">${
               i === 0 ? "Jetzt" : formatHourlyTime(hour.time) + " Uhr"
             }</div>
-            <div class="hourly-forecast__icon"><img src="https:${
+            <img src="https:${
               hour.condition.icon
-            }"/></div>
+            }" class="hourly-forecast__icon"/>
             <div class="hourly-forecast__temperature">${formatTemperature(
               hour.temp_c
             )}°</div>
@@ -78,4 +80,38 @@ function getTodayForecastHtml(
       </div>
     </div>
     `;
+}
+
+function getForecastHtml(forecast) {
+  const forecastElements = forecast.map(
+    (forecastDay, i) => `
+      <div class="forecast-day">
+        <div class="forecast-day__day">${
+          i === 0 ? "Heute" : getDayOfWeek(forecastDay.date)
+        }</div>
+        <img src="https:${
+          forecastDay.day.condition.icon
+        }" class="forecast-day__icon"/>
+        <div class="forecast-day__min-temp">T:${formatTemperature(
+          forecastDay.day.mintemp_c
+        )}°</div>
+        <div class="forecast-day__max-temp">H:${formatTemperature(
+          forecastDay.day.maxtemp_c
+        )}°</div>
+        <div class="forecast-day__wind">Wind: ${
+          forecastDay.day.maxwind_kph
+        } km/h</div>
+      </div>
+  `
+  );
+
+  const forecastHtml = forecastElements.join("");
+  return `
+    <div class="forecast">
+      <div class="forecast__title">Vorhersage für die nächsten 3 Tage:</div>
+      <div class="forecast__days">
+        ${forecastHtml}
+      </div>
+    </div>
+  `;
 }

@@ -3,7 +3,7 @@ export function formatTemperature(temperature) {
 }
 
 export function formatHourlyTime(time) {
-  return time.split(" ")[1];
+  return time.split(" ")[1].split(":")[0];
 }
 
 // Takes forecast.forecastday as param, but name "forecast" is smoother
@@ -30,4 +30,12 @@ export function get24HoursForecastFromNow(forecast, lastUpdatedEpoch) {
   console.log(newForecast);
 
   return newForecast;
+}
+
+export function getDayOfWeek(date) {
+  const dateObj = new Date(date);
+
+  const days = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+
+  return days[dateObj.getDay() - 1];
 }
