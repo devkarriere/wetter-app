@@ -83,8 +83,7 @@ $card-header-gap: 0.5rem;
 
 .forecast-day {
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(5, max-content);
+  display: flex;
   align-items: center;
   gap: 1rem;
   padding-bottom: $card-header-gap;
@@ -95,7 +94,27 @@ $card-header-gap: 0.5rem;
     border: none;
   }
 
+  &__day {
+    width: 2rem;
+  }
+
   &__icon {
     width: 2.5rem;
+  }
+}
+
+.mini-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.mini-stat {
+  @include card();
+
+  &__value {
+    margin: 1rem 0 1rem 0;
+    font-size: 1.5rem;
   }
 }
