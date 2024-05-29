@@ -14,6 +14,7 @@ import {
 } from "./api";
 import { renderLoadingScreen } from "./loading";
 import { loadMainMenu } from "./mainMenu";
+import { getConditionImagePath } from "./conditions";
 
 export async function loadDetailView(cityName) {
   renderLoadingScreen("Lade Wetter für " + cityName + "...");
@@ -31,6 +32,15 @@ export function renderDetailView(weatherData) {
   const isFavorite = getFavoriteCities().find((city) => city === location.name);
 
   console.log(isFavorite);
+  const conditionImage = getConditionImagePath(
+    current.condition.code,
+    current.is_day !== 1
+  );
+
+  if (conditionImage) {
+    rootElement.style = `--condition-image: url(${conditionImage})`;
+    rootElement.classList.add("show-background");
+  }
 
   rootElement.innerHTML =
     getActionBarHtml(!isFavorite) +
@@ -94,8 +104,10 @@ function getTodayForecastHtml(
   const hourlyForecastElements = get24HoursForecastFromNow(
     forecastdays,
     lastUpdatedEpoch
-  ).map(
-    (hour, i) => `
+  )
+    .filter((el) => el !== undefined)
+    .map(
+      (hour, i) => `
         <div class="hourly-forecast">    
             <div class="hourly-forecast__time">${
               i === 0 ? "Jetzt" : formatHourlyTime(hour.time) + " Uhr"
@@ -108,7 +120,7 @@ function getTodayForecastHtml(
             )}°</div>
         </div>
     `
-  );
+    );
 
   const hourlyForecastHtml = hourlyForecastElements.join("");
 

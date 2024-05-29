@@ -5,11 +5,13 @@ import {
   searchLocation,
   removeCityFromFavorites,
 } from "./api";
+import { getConditionImagePath } from "./conditions";
 import { loadDetailView, renderDetailView } from "./detailView";
 import { getLoadingHtml, renderLoadingScreen } from "./loading";
 import { debounce, formatLocalTime, formatTemperature } from "./utils";
 
 export async function loadMainMenu() {
+  rootElement.classList.remove("show-background");
   renderLoadingScreen("Lade Übersicht...");
 
   renderMainMenu();
@@ -58,10 +60,17 @@ async function getCityListHtml() {
     const { location, current, forecast } = weatherData;
     const forecastDay = forecast.forecastday[0].day;
 
+    const conditionImage = getConditionImagePath(
+      current.condition.code,
+      current.is_day !== 1
+    );
+
     const cityHtml = `
         <div class="city-wrapper">
             <button class="city-wrapper__delete" data-city="${city}">Löschen</button>
-            <div class="city" data-city="${city}">
+            <div class="city" data-city="${city}"${
+      conditionImage ? `style="--condition-image: url(${conditionImage})"` : ""
+    }>
                 <div class="city__left-column">
                     <h2 class="city__name">${city}</h2>
                     <div class="city__country">${location.country}</div>
