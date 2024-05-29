@@ -176,10 +176,6 @@ function registerEventListeners() {
 
   const searchBar = document.querySelector(".main-menu__search-input");
 
-  searchBar.addEventListener("focusin", (e) => {
-    e.preventDefault();
-  });
-
   searchBar.addEventListener(
     "input",
     debounce(async (e) => {
