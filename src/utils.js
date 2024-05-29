@@ -54,3 +54,18 @@ export function formatToMilitaryTime(time) {
 
   return newHour + ":" + minutes;
 }
+
+export function formatLocalTime(time) {
+  return time.split(" ")[1];
+}
+
+// Copied from https://www.joshwcomeau.com/snippets/javascript/debounce/
+export function debounce(callback, wait) {
+  let timeoutId = null;
+  return (...args) => {
+    window.clearTimeout(timeoutId);
+    timeoutId = window.setTimeout(() => {
+      callback(...args);
+    }, wait);
+  };
+}

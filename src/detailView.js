@@ -6,6 +6,21 @@ import {
   get24HoursForecastFromNow,
   getDayOfWeek,
 } from "./utils";
+import {
+  getCurrentWeather,
+  getFavoriteCities,
+  getForecastWeather,
+  saveCityAsFavorite,
+} from "./api";
+import { renderLoadingScreen } from "./loading";
+import { loadMainMenu } from "./mainMenu";
+
+export async function loadDetailView(cityName) {
+  renderLoadingScreen("Lade Wetter für " + cityName + "...");
+  const weatherData = await getForecastWeather(cityName);
+  renderDetailView(weatherData);
+  registerEventListeners(cityName);
+}
 
 export function renderDetailView(weatherData) {
   console.log(weatherData);
@@ -13,7 +28,12 @@ export function renderDetailView(weatherData) {
   const { location, current, forecast } = weatherData;
   const currentDay = forecast.forecastday[0];
 
+  const isFavorite = getFavoriteCities().find((city) => city === location.name);
+
+  console.log(isFavorite);
+
   rootElement.innerHTML =
+    getActionBarHtml(!isFavorite) +
     getHeaderHtml(
       location.name,
       formatTemperature(current.temp_c),
@@ -36,6 +56,19 @@ export function renderDetailView(weatherData) {
       current.precip_mm,
       current.uv
     );
+}
+
+function getActionBarHtml(showFavoritesButton = true) {
+  return `
+  <div class="action-bar">
+    <button class="action-bar__back">Zurück</button>
+    ${
+      showFavoritesButton
+        ? `<button class="action-bar__favorite">Favorit</button>`
+        : ""
+    }
+  </div>
+  `;
 }
 
 function getHeaderHtml(location, currentTemp, condition, maxTemp, minTemp) {
@@ -161,4 +194,19 @@ function getMiniStatsHtml(
       </div>
     </div>
   `;
+}
+
+function registerEventListeners(cityName) {
+  const backButton = document.querySelector(".action-bar__back");
+
+  backButton.addEventListener("click", (e) => {
+    loadMainMenu();
+  });
+
+  const favoriteButton = document.querySelector(".action-bar__favorite");
+
+  favoriteButton?.addEventListener("click", (e) => {
+    saveCityAsFavorite(cityName);
+    favoriteButton.remove();
+  });
 }
