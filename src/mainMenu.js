@@ -43,6 +43,13 @@ function getMenuHeaderHtml() {
     `;
 }
 
+const deleteIcon = `
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+  </svg>
+
+`;
+
 async function getCityListHtml() {
   const favoriteCities = getFavoriteCities();
   console.log(favoriteCities);
@@ -67,7 +74,7 @@ async function getCityListHtml() {
 
     const cityHtml = `
         <div class="city-wrapper">
-            <button class="city-wrapper__delete" data-city="${city}">Löschen</button>
+            <div class="city-wrapper__delete" data-city="${city}">${deleteIcon}</div>
             <div class="city" data-city="${city}"${
       conditionImage ? `style="--condition-image: url(${conditionImage})"` : ""
     }>
@@ -106,7 +113,7 @@ function renderSearchResults(searchResults) {
     (result) =>
       `
         <div class="search-result" data-city="${result.name}" tabindex="0">
-            <h3 class="seach-result__name">${result.name}</h3>
+            <h3 class="search-result__name">${result.name}</h3>
             <p class="search-result__country">${result.country}</p>
         </div>
     `

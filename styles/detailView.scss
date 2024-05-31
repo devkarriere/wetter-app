@@ -1,16 +1,36 @@
 .action-bar {
   display: flex;
   justify-content: space-between;
+
+  &__back,
+  &__favorite {
+    width: 2.5rem;
+    filter: drop-shadow($text-shadow);
+    cursor: pointer;
+  }
 }
 
 .current-weather {
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-shadow: $text-shadow;
 
   &__location {
-    color: red;
+    font-size: 1.5rem;
+    font-weight: 400;
+  }
+
+  &__current-temperature {
+    margin: 0.5rem 0;
+    font-size: 4.5rem;
+    font-weight: 200;
+  }
+
+  &__condition {
+    margin-bottom: 0.25rem;
   }
 }
 
