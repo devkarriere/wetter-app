@@ -12,10 +12,10 @@ export async function getCurrentWeather(location) {
   return weatherData;
 }
 
-export async function getForecastWeather(location, days = 3) {
+export async function getForecastWeather(locationId, days = 3) {
   // We always just fetch 3 days of forecast, because that's the free plan maximum.
   const response = await fetch(
-    `${API_BASE_URL}/forecast.json?key=${API_KEY}&q=${location}&days=${days}&lang=de`
+    `${API_BASE_URL}/forecast.json?key=${API_KEY}&q=id:${locationId}&days=${days}&lang=de`
   );
 
   const weatherData = await response.json();
@@ -37,23 +37,23 @@ export function getFavoriteCities() {
   return JSON.parse(localStorage.getItem(FAVORITE_CITIES_KEY)) || [];
 }
 
-export function saveCityAsFavorite(cityName) {
+export function saveCityAsFavorite(cityId) {
   const favorites = getFavoriteCities();
 
-  if (favorites.find((city) => city === cityName)) {
-    alert(cityName + " wurde bereits den Favoriten hinzugefügt.");
+  if (favorites.find((city) => city === cityId)) {
+    alert(cityId + " wurde bereits den Favoriten hinzugefügt.");
     return;
   }
 
-  favorites.push(cityName);
+  favorites.push(cityId);
 
   localStorage.setItem(FAVORITE_CITIES_KEY, JSON.stringify(favorites));
 }
 
-export function removeCityFromFavorites(cityName) {
+export function removeCityFromFavorites(cityId) {
   const favorites = getFavoriteCities();
 
-  const filteredFavorites = favorites.filter((city) => city !== cityName);
+  const filteredFavorites = favorites.filter((city) => city !== cityId);
 
   localStorage.setItem(FAVORITE_CITIES_KEY, JSON.stringify(filteredFavorites));
 }

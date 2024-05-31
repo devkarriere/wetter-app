@@ -52,7 +52,6 @@ const deleteIcon = `
 
 async function getCityListHtml() {
   const favoriteCities = getFavoriteCities();
-  console.log(favoriteCities);
 
   if (!favoriteCities || favoriteCities.length < 1) {
     return "Noch keine Favoriten gespeichert.";
@@ -74,12 +73,14 @@ async function getCityListHtml() {
 
     const cityHtml = `
         <div class="city-wrapper">
-            <div class="city-wrapper__delete" data-city="${city}">${deleteIcon}</div>
-            <div class="city" data-city="${city}"${
+            <div class="city-wrapper__delete" data-city-id="${city}">${deleteIcon}</div>
+            <div class="city" data-city-name="${
+              location.name
+            }" data-city-id="${city}"${
       conditionImage ? `style="--condition-image: url(${conditionImage})"` : ""
     }>
                 <div class="city__left-column">
-                    <h2 class="city__name">${city}</h2>
+                    <h2 class="city__name">${location.name}</h2>
                     <div class="city__country">${location.country}</div>
                     <div class="city__condition">${current.condition.text}</div>
                 </div>
@@ -112,7 +113,7 @@ function renderSearchResults(searchResults) {
   const searchResultsElements = searchResults.map(
     (result) =>
       `
-        <div class="search-result" data-city="${result.name}" tabindex="0">
+        <div class="search-result" data-city-id="${result.id}" data-city-name="${result.name}" tabindex="0">
             <h3 class="search-result__name">${result.name}</h3>
             <p class="search-result__country">${result.country}</p>
         </div>
@@ -137,9 +138,10 @@ function registerSearchResultsEventListeners() {
 
   searchResults.forEach((searchResult) => {
     searchResult.addEventListener("click", (e) => {
-      const cityName = searchResult.getAttribute("data-city");
-      console.log(cityName);
-      loadDetailView(cityName);
+      const cityName = searchResult.getAttribute("data-city-name");
+      const cityId = searchResult.getAttribute("data-city-id");
+
+      loadDetailView(cityName, cityId);
     });
   });
 }
@@ -165,7 +167,7 @@ function registerEventListeners() {
 
   deleteButtons.forEach((btn) => {
     btn.addEventListener("click", (e) => {
-      removeCityFromFavorites(btn.getAttribute("data-city"));
+      removeCityFromFavorites(btn.getAttribute("data-city-id"));
       btn.parentElement.remove();
     });
   });
@@ -221,9 +223,10 @@ function registerEventListeners() {
   cities.forEach((city) => {
     city.addEventListener("click", (e) => {
       console.log(city);
-      const cityName = city.getAttribute("data-city");
+      const cityId = city.getAttribute("data-city-id");
+      const cityName = city.getAttribute("data-city-name");
       console.log(cityName);
-      loadDetailView(cityName);
+      loadDetailView(cityName, cityId);
     });
   });
 }

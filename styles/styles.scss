@@ -30,7 +30,6 @@ body {
   color: $text-color;
   padding: 1rem;
   min-height: 100vh;
-  background-attachment: fixed;
   font-family: "Inter", sans-serif;
 
   @include largeScreens {
