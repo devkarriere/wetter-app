@@ -25,7 +25,6 @@ export async function renderMainMenu() {
         </div>
     `;
 
-  // TODO: register eventlisteners
   registerEventListeners();
 }
 
@@ -61,7 +60,6 @@ async function getCityListHtml() {
 
   for (let city of favoriteCities) {
     const weatherData = await getForecastWeather(city, 1);
-    console.log(weatherData);
 
     const { location, current, forecast } = weatherData;
     const forecastDay = forecast.forecastday[0].day;
@@ -109,7 +107,6 @@ async function getCityListHtml() {
 }
 
 function renderSearchResults(searchResults) {
-  console.log(searchResults);
   const searchResultsElements = searchResults.map(
     (result) =>
       `
@@ -121,8 +118,6 @@ function renderSearchResults(searchResults) {
   );
 
   const searchResultsHtml = searchResultsElements.join("");
-
-  console.log(searchResultsHtml);
 
   const searchResultsDiv = document.querySelector(".main-menu__search-results");
   searchResultsDiv.innerHTML = searchResultsHtml;
@@ -152,7 +147,7 @@ function bodyClickHandler(e) {
     document.removeEventListener("click", bodyClickHandler);
     return;
   }
-  console.log(e.target);
+
   if (!searchWrapper.contains(e.target)) {
     const searchResults = document.querySelector(".main-menu__search-results");
     searchResults.classList.add("main-menu__search-results--hidden");
@@ -205,7 +200,7 @@ function registerEventListeners() {
         renderSearchResultsLoading();
         searchResults = await searchLocation(q);
       }
-      console.log(searchResults);
+
       renderSearchResults(searchResults);
       registerSearchResultsEventListeners();
     }, 500)
@@ -222,10 +217,9 @@ function registerEventListeners() {
 
   cities.forEach((city) => {
     city.addEventListener("click", (e) => {
-      console.log(city);
       const cityId = city.getAttribute("data-city-id");
       const cityName = city.getAttribute("data-city-name");
-      console.log(cityName);
+
       loadDetailView(cityName, cityId);
     });
   });

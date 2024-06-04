@@ -27,8 +27,6 @@ export function get24HoursForecastFromNow(forecast, lastUpdatedEpoch) {
     tomorrowIndex++;
   }
 
-  console.log(newForecast);
-
   return newForecast;
 }
 

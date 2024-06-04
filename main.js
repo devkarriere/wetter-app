@@ -9,12 +9,4 @@ import "./styles/styles.scss";
 
 export const rootElement = document.getElementById("app");
 
-let weatherData;
-
-async function main() {
-  // weatherData = await getForecastWeather("Mannheim");
-  // renderDetailView(weatherData);
-  loadMainMenu();
-}
-
-main();
+loadMainMenu();

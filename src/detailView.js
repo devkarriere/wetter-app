@@ -24,14 +24,11 @@ export async function loadDetailView(cityName, cityId) {
 }
 
 export function renderDetailView(weatherData, cityId) {
-  console.log(weatherData);
-
   const { location, current, forecast } = weatherData;
   const currentDay = forecast.forecastday[0];
 
   const isFavorite = getFavoriteCities().find((city) => city === cityId);
 
-  console.log(isFavorite);
   const conditionImage = getConditionImagePath(
     current.condition.code,
     current.is_day !== 1
